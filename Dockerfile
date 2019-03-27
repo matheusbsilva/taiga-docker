@@ -1,6 +1,7 @@
 FROM python:3.6.8
 
 EXPOSE 8000
+EXPOSE 80
 
 RUN apt-get update -y && \
     apt-get install -y nginx gettext \
@@ -19,10 +20,14 @@ WORKDIR /taiga
 
 ADD backend/requirements.txt /taiga/
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt && pip install gunicorn
 
 ADD ./backend/ /taiga/
 
+COPY ./docker-settings.py /taiga/settings/local.py
+COPY ./conf-front.json ./taiga-front/dist/conf.json
+
 ENTRYPOINT ["/taiga/docker-entrypoint.sh"]
 
-CMD python manage.py runserver 0.0.0.0:8000
+CMD gunicorn taiga.wsgi:application --bind 0.0.0.0:8000
+

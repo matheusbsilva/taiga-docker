@@ -2,7 +2,8 @@ version: '3.5'
 
 services:
   taiga:
-    build: .
+    # build: .
+    image: matheusbsilva/taiga
     ports:
       - 8000:8000
       - 8080:80
@@ -33,9 +34,12 @@ services:
       RABBITMQ_DEFAULT_PASS: password 
       RABBITMQ_DEFAULT_VHOST: taiga
   events:
-    build: ./events
+    # build: ./events
+    image: matheusbsilva/taiga-events
     ports:
       - 8888:8888
+    environment:
+      RABBITMQ_URL: "amqp://taiga:password@rabbitmq:5672/taiga"
     depends_on:
       - rabbitmq
 

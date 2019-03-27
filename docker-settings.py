@@ -96,8 +96,8 @@ STATIC_ROOT = os.environ.get('STATIC_ROOT', '/home/taiga/static')
 #########################################
 
 if(os.environ.get("EMAIL_SETTINGS") == 'True'):
-    DEFAULT_FROM_EMAIL = "john@doe.com"
-    CHANGE_NOTIFICATIONS_MIN_INTERVAL = 300 #seconds
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', "john@doe.com")
+    CHANGE_NOTIFICATIONS_MIN_INTERVAL = int(os.environ.get('CHANGE_NOTIFICATION_MIN_INTERVAL', 300)) #seconds
 
     EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND',
                                    'django.core.mail.backends.smtp.EmailBackend')
